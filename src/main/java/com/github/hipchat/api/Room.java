@@ -189,7 +189,7 @@ public class Room extends RoomId
         return messages;
     }
 
-    public boolean sendMessage(String message, UserId from, boolean notify, Color color)
+    public boolean sendMessage(String message, String from, boolean notify, Color color)
     {
         String query = String.format(HipChatConstants.ROOMS_MESSAGE_QUERY_FORMAT, HipChatConstants.JSON_FORMAT, getOrigin().getAuthToken());
 
@@ -205,7 +205,7 @@ public class Room extends RoomId
             params.append("&from=");
             try
             {
-                params.append(URLEncoder.encode(from.getName(), "UTF-8"));
+                params.append(URLEncoder.encode(from, "UTF-8"));
                 params.append("&message=");
                 params.append(URLEncoder.encode(message, "UTF-8"));
             } catch (UnsupportedEncodingException e)
@@ -264,5 +264,10 @@ public class Room extends RoomId
         }
 
         return result;
+    }
+
+    public boolean sendMessage(String message, UserId from, boolean notify, Color color)
+    {
+        return sendMessage(message, from.getName(), notify, color);
     }
 }
