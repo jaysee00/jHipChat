@@ -58,7 +58,7 @@ public class HipchatTests
     }
 
     @Test
-    public void testCreateAndDeleteRooms()
+    public void testCreateAndDeleteRooms() throws Exception
     {
         HipChat hipchat = new HipChat(HIPCHAT_KEY);
 
@@ -83,6 +83,10 @@ public class HipchatTests
 
         boolean deleted = hipchat.deleteRoom(room.getId());
         assertTrue(deleted);
+
+        // There seems to be a minor delay between when a room is deleted and the deletion is reflected in the next
+        // call to listRooms()
+        Thread.sleep(2000);
 
         List<Room> roomsAfterDelete = hipchat.listRooms();
         int countAfterOp2 = roomsAfterDelete.size();
